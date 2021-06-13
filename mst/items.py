@@ -14,3 +14,9 @@ class MstItem(scrapy.Item):
     alternateName = scrapy.Field()
     telephone = scrapy.Field()
     address = scrapy.Field()
+
+
+class TaxUrls(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    url = scrapy.Field()

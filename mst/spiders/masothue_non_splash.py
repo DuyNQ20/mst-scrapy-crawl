@@ -8,7 +8,6 @@ class MstCrawlSpider(scrapy.Spider):
     start_urls = ['https://masothue.com/0106128881-002-chi-nhanh-cong-ty-co-phan-thuong-mai-va-giao-duc-nhat-han-quang-binh',
                   'https://masothue.com/6001717390-cong-ty-tnhh-xay-dung-va-thiet-bi-tay-nguyen']
 
-
     def start_requests(self):
         dem = 0
         for url in self.start_urls:
