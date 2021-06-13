@@ -2,13 +2,21 @@ import scrapy
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from mst.items import TaxUrls, MstItem
+import ast
 
 
 class MstCrawlSpider(scrapy.Spider):
     name = 'masothue_all'
     allowed_domains = ['masothue.com']
-    start_urls = ['https://masothue.com/tra-cuu-ma-so-thue-theo-tinh/ca-mau-108']
+    # start_urls = ['https://masothue.com/tra-cuu-ma-so-thue-theo-tinh/ca-mau-108']
     page_number = 1
+
+    def start_requests(self):
+        with open("url.json", "r") as f:
+            text = f.read()
+            start_urls = ast.literal_eval(text)
+        for url in start_urls:
+            yield scrapy.Request(url, self.parse)
 
     def parse(self, response):
         currentPage = response.css("span.page-numbers.current::text").get()
@@ -20,9 +28,7 @@ class MstCrawlSpider(scrapy.Spider):
                 yield itemUrl
             self.page_number = self.page_number + 1
             next_page = "/tra-cuu-ma-so-thue-theo-tinh/ca-mau-108?page=" + str(self.page_number) + ""
-            # next_page = response.urljoin(next_page)
-            if next_page:
-                yield response.follow(url=next_page, callback=self.parse)
+            yield response.follow(url=next_page, callback=self.parse)
 
     # def parse(self, response):
     #     currentPage = response.css("span.page-numbers.current::text").get()
